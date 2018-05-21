@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Client;
-use Laracasts\Flash\Flash;
+use App\Cliente;
 
 class ClienteController extends Controller
 {
@@ -17,8 +15,8 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Client::orderBy('id','ASC')->paginate(5);
-        return view('cliente.index')->with('clientes',$clientes);
+        $clientes = Cliente::latest()->paginate(5);
+        return view('clientes.index', compact('clientes'))->with('i',(request()->input('page',1) -1) *5);
     }
 
     /**
@@ -28,7 +26,7 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        return view('cliente.create');
+        return view('clientes.create');
     }
 
     /**
@@ -39,11 +37,15 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        $cliente = new Client($request->all());
-        //dd($cliente);
-        $cliente -> save();
-        Flash::success("Se ha registrado el cliente ".$cliente->nombrecomercial." de forma exitosa");
-        return redirect()->route('cliente.index');
+        request()->validate([
+            'nit' => 'required',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'direccion' => 'required',
+            'telefono' => 'required',
+        ]);
+        Cliente::create($request->all());
+        return redirect()->route('clientes.index')->with('success','Cliente agregado exitosamente.');
     }
 
     /**
@@ -54,8 +56,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $cliente = Client::find($id);
-        return view('cliente.show')->with('cliente',$cliente);
+        $cliente = Cliente::find($id);
+        return view('clientes.show', compact('cliente'));
     }
 
     /**
@@ -66,8 +68,8 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $cliente = Client::find($id);
-        return view('cliente.edit')->with('cliente',$cliente);
+        $cliente = Cliente::find($id);
+        return view('clientes.edit', compact('cliente'));
     }
 
     /**
@@ -79,11 +81,15 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cliente = Client::find($id);
-        $cliente -> fill($request->all()); //reemplaza las 3 lineas de abajo
-        $cliente ->save();
-        Flash::warning("El cliente ".$cliente->nombrecomercial." se actualizo de forma exitosa");
-        return redirect()->route('cliente.index');
+         request()->validate([
+            'nit' => 'required',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'direccion' => 'required',
+            'telefono' => 'required',
+      ]);
+      Cliente::find($id)->update($request->all());
+      return redirect()->route('clientes.index')->with('success','Cliente actualizado exitosamente');
     }
 
     /**
@@ -94,9 +100,7 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-       $cliente = Client::find($id);
-       Client::destroy($id);
-       Flash::error("Se ha borrado el Cliente ".$cliente->nombrecomercial." de forma exitosa");
-       return redirect()->route('cliente.index');
+         Cliente::find($id)->delete();
+        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado exitosamente');
     }
 }
