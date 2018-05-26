@@ -40,7 +40,7 @@ class MenuController extends Controller
         request()->validate([
             'plato' => 'required',
             'descripcion' => 'required',
-            'precio' => 'required',
+            'precio' => 'required|numeric',
         ]);
         Menu::create($request->all());
         return redirect()->route('menus.index')->with('success','Plato agregado exitosamente.');
@@ -82,7 +82,7 @@ class MenuController extends Controller
         request()->validate([
             'plato' => 'required',
             'descripcion' => 'required',
-            'precio' => 'required',
+            'precio' => 'required|numeric',
       ]);
       Menu::find($id)->update($request->all());
       return redirect()->route('menus.index')->with('success','Plato actualizado exitosamente');

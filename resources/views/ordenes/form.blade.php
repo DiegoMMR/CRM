@@ -7,14 +7,26 @@
   </div>
   <div class="col-xs-12">
     <div class="form-group">
-      <strong>Cod. del plato : </strong>
-      {!! Form::text('idPlato', null, ['placeholder'=>'Codigo del plato','class'=>'form-control']) !!}
+      <strong>Plato : </strong>
+      <?php $platos = DB::table('menu')->select('id','plato')->get(); ?>
+
+      <select class="form-control" name="idPlato">
+        @foreach($platos as $plato)
+          <option value="{{$plato->id}}">{{$plato->plato}}</option>
+        @endforeach
+      </select>
     </div>
   </div>
   <div class="col-xs-12">
     <div class="form-group">
       <strong>No. Factura : </strong>
-      {!! Form::text('idFactura', null, ['placeholder'=>'# de la factura','class'=>'form-control']) !!}
+      <?php $facturas = DB::select('CALL verFacturas()'); ?>
+
+      <select class="form-control" name="idFactura">
+        @foreach($facturas as $factura)
+          <option value="{{$factura->NoFactura}}">#{{$factura->NoFactura}} &nbsp;&nbsp;&nbsp;&nbsp; De: {{$factura->nombre}} {{$factura->apellido}}</option>
+        @endforeach
+      </select>
     </div>
   </div>
    

@@ -40,9 +40,9 @@ class OrdenController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'cantidad' => 'required',
-            'idPlato' => 'required',
-            'idFactura' => 'required',
+            'cantidad' => 'required|numeric',
+            'idPlato' => 'required|numeric',
+            'idFactura' => 'required|numeric',
         ]);
 
         $cantidad = $request->input('cantidad');
@@ -88,9 +88,9 @@ class OrdenController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
-            'cantidad' => 'required',
-            'idPlato' => 'required',
-            'idFactura' => 'required',
+            'cantidad' => 'required|numeric',
+            'idPlato' => 'required|numeric',
+            'idFactura' => 'required|numeric',
         ]);
 
         $cantidad = $request->input('cantidad');

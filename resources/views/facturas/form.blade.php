@@ -2,8 +2,15 @@
   
   <div class="col-xs-12">
     <div class="form-group">
-      <strong>Codigo Cliente : </strong>
-      {!! Form::text('idCliente', null, ['placeholder'=>'5','class'=>'form-control']) !!}
+      <strong>Codigo Cliente :</strong>
+      <?php
+         $clientes = DB::table('cliente')->select('id as idCliente','nombre','apellido')->get(); 
+      ?>
+      <select class="form-control" name="idCliente">
+        @foreach($clientes as $cliente)
+          <option value="{{$cliente->idCliente}}">{{$cliente->nombre}} {{$cliente->apellido}}</option>
+        @endforeach
+      </select>
     </div>
   </div>
   <div class="col-xs-12">

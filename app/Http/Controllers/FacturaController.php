@@ -42,7 +42,7 @@ class FacturaController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'idCliente' => 'required',            
+            'idCliente' => 'required|numeric',            
         ]);
         Factura::create($request->all());
         return redirect()->route('facturas.index')->with('success','Factura generada exitosamente.');
@@ -84,7 +84,7 @@ class FacturaController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
-            'idCliente' => 'required',  
+            'idCliente' => 'required|numeric',  
       ]);
       Factura::find($id)->update($request->all());
       return redirect()->route('facturas.index')->with('success','Factura actualizada exitosamente');

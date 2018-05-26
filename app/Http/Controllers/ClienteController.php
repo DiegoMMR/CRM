@@ -82,11 +82,11 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
          request()->validate([
-            'nit' => 'required',
+            'nit' => 'required|numeric',
             'nombre' => 'required',
             'apellido' => 'required',
             'direccion' => 'required',
-            'telefono' => 'required',
+            'telefono' => 'required|numeric',
       ]);
       Cliente::find($id)->update($request->all());
       return redirect()->route('clientes.index')->with('success','Cliente actualizado exitosamente');
